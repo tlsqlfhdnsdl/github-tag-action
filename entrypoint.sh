@@ -44,12 +44,15 @@ fi
 
 # get commit logs and determine home to bump the version
 # supports #major, #minor, #patch (anything else will be 'minor')
-case "$log" in
-    *#major* ) new=$(semver bump major $tag);;
-    *#minor* ) new=$(semver bump minor $tag);;
-    *#patch* ) new=$(semver bump patch $tag);;
-    * ) new=$(semver bump `echo $default_semvar_bump` $tag);;
-esac
+if [ ! $pre_release ]
+then
+    case "$log" in
+        *#major* ) new=$(semver bump major $tag);;
+        *#minor* ) new=$(semver bump minor $tag);;
+        *#patch* ) new=$(semver bump patch $tag);;
+        * ) new=$(semver bump `echo $default_semvar_bump` $tag);;
+    esac
+fi
 
 # prefix with 'v'
 if $with_v
